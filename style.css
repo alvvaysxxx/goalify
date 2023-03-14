@@ -1,0 +1,17 @@
+.logo{
+  width: 150px;
+  height: auto;
+}
+
+.card {
+  max-width: 18rem;
+}
+
+.cardtitle {
+  display: inline-block;
+}
+
+.success {
+  color: #72a56d;
+  text-align: center;
+}
