@@ -18,7 +18,7 @@ submitGoalInfoBtn.addEventListener('click', function () {
   lifeArea.value = ""
   goalDifficulty.value = ""
   goalImportance.value = ""
-  goalTitle.value = ""
+  goalName.value = ""
   goalText.value = ""
 })
 
