@@ -7,7 +7,7 @@ submitGoalInfoBtn = document.querySelector('.submit-goal-info')
 goalsOutput = document.querySelector('.goals')
 progress = document.querySelector(".progress-bar")
 
-const goals = {
+goals = {
   goalsList: []
 }
 
@@ -19,7 +19,7 @@ submitGoalInfoBtn.addEventListener('click', function () {
   goalDifficulty.value = ""
   goalImportance.value = ""
   goalName.value = ""
-  goalText.value = ""
+  goalDesc.value = ""
 })
 
 
@@ -34,6 +34,7 @@ function createGoal () {
     id: goals.goalsList.length + 1
     
     }
+    localStorage.setItem("goals", JSON.stringify(goals))
 
   goals.goalsList.push(goal)
   renderGoals()
@@ -192,4 +193,11 @@ function calcProgress() {
   progress.style.width = Math.round((completedGoals / totalGoals) * 100) + "%"
   
   return Math.round((completedGoals / totalGoals) * 100) + "%"
+}
+
+if (localStorage.getItem("goals") == null) {
+  
+} else {
+  goals.goalsList.push(JSON.parse(localStorage.getItem("goals")))
+  renderGoals()
 }
