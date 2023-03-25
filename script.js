@@ -7,9 +7,7 @@ submitGoalInfoBtn = document.querySelector('.submit-goal-info')
 goalsOutput = document.querySelector('.goals')
 progress = document.querySelector(".progress-bar")
 
-goals = {
-  goalsList: []
-}
+goalsList = []
 
 
 
@@ -31,12 +29,11 @@ function createGoal () {
     importance: goalImportance.value,
     lifeArea: lifeArea.value,
     completed: false,
-    id: goals.goalsList.length + 1
+    id: goalsList.length + 1
     
     }
-    localStorage.setItem("goals", JSON.stringify(goals))
-
-  goals.goalsList.push(goal)
+  goalsList.push(goal)
+  localStorage.setItem('goalsList', JSON.stringify(goalsList))
   renderGoals()
 }
 
@@ -100,9 +97,16 @@ function renderGoal (goal, index) {
     deleteCardBtn.innerHTML = 'Удалить'
     cardFooter.append(deleteCardBtn)
     cardCompleted.classList.add('badge', 'rounded-pill', 'text-bg-danger')
+
+    cardBtn.addEventListener('click', function () {
+      goal.completed = true
+      localStorage.setItem('goalsList', JSON.stringify(goalsList))
+      renderGoals()
+    })
     
     deleteCardBtn.addEventListener("click", function () {
-      goals.goalsList.splice(index, 1)
+      goalsList.splice(index, 1)
+      localStorage.setItem('goalsList', JSON.stringify(goalsList))
       renderGoals()
     })
   } else {
@@ -112,10 +116,6 @@ function renderGoal (goal, index) {
   }
 
   goalsOutput.append(card)
-  cardBtn.addEventListener('click', function () {
-    goal.completed = true
-    renderGoals()
-  })
 
 
 }
@@ -123,12 +123,12 @@ function renderGoal (goal, index) {
 function renderGoals () {
   goalsOutput.innerHTML = ''
 
-  if (goals.goalsList.length === 0) {
+  if (goalsList.length === 0) {
     return
   }
   // Отображение незавершенных целей
-  for (let i = goals.goalsList.length - 1; i >= 0; i--) {
-    const goal = goals.goalsList[i]
+  for (let i = goalsList.length - 1; i >= 0; i--) {
+    const goal = goalsList[i]
     const index = i
     if (!goal.completed) {
       renderGoal(goal, index)
@@ -136,8 +136,8 @@ function renderGoals () {
     }
   }
   // Отображение завершенных целей
-  for (let i = goals.goalsList.length - 1; i >= 0; i--) {
-    const goal = goals.goalsList[i]
+  for (let i = goalsList.length - 1; i >= 0; i--) {
+    const goal = goalsList[i]
     const index = i
     if (goal.completed) {
       renderGoal(goal, index)
@@ -169,14 +169,14 @@ function applyBadgeStyles(goal) {
 
 
 
-if (goals.goalsList.length === 0) {
+if (goalsList.length === 0) {
   progress.innerHTML = calcProgress()
 } else {
   renderGoals()
 }
 
 function calcProgress() {
-  const totalGoals = goals.goalsList.length;
+  const totalGoals = goalsList.length;
   let completedGoals = 0
 
   if (totalGoals === 0) {
@@ -185,7 +185,7 @@ function calcProgress() {
   }
 
   for (let i = 0; i < totalGoals; i++) {
-    if (goals.goalsList[i].completed) {
+    if (goalsList[i].completed) {
       completedGoals++
     }
   }
@@ -195,9 +195,9 @@ function calcProgress() {
   return Math.round((completedGoals / totalGoals) * 100) + "%"
 }
 
-if (localStorage.getItem("goals") == null) {
+if (localStorage.getItem('goalsList') == null) {
   
 } else {
-  goals.goalsList.push(JSON.parse(localStorage.getItem("goals")))
+  goalsList = JSON.parse(localStorage.getItem('goalsList'))
   renderGoals()
 }
